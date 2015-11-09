@@ -30,7 +30,7 @@ public class AStar {
 	
 	public LinkedList<Node> organize(Node goal, LinkedList<Node> currentSet) {
 		LinkedList<Node> frontiers = new LinkedList<Node>();
-		
+		//need to organize list by shortest distance, currently pure heuristic
 		return frontiers;
 	}
 	

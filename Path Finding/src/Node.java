@@ -6,7 +6,7 @@ public class Node implements Comparable<Node>{
 	private int y;
 	private Node parent;
 	private LinkedList<Node> possibleNodes;
-	private double distance;
+	private double distance;		//heuristic
 
 	public Node(int x, int y) {
 		this.x = x;
