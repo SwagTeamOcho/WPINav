@@ -32,7 +32,7 @@ public class AStar {
 	//this is the heuristic done by AStar 
 	public LinkedList<Node> organize(Node goal, LinkedList<Node> currentSet) {
 		LinkedList<Node> frontiers = new LinkedList<Node>();
-		//need to organize list by shortest distance, currently pure heuristic
+		//need to organize list by distance to goal + amount traveled
 		return frontiers;
 	}
 	

@@ -2,22 +2,23 @@ import java.util.LinkedList;
 
 public class Node implements Comparable<Node>{
 	
-	private int x;
-	private int y;
+//	private int x;
+//	private int y;
+	private NodeType type;
 	private Node parent;
 	private LinkedList<Node> possibleNodes;
-	private double distance;		//heuristic
+//	private double distance;		//heuristic
 
-	public Node(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	public Node(int x, int y, Node goal) {
-		this.x = x;
-		this.y = y;
-		this.distance = Math.sqrt((this.getX()-goal.getX())+(this.getY()-goal.getY()));
-	}
+//	public Node(int x, int y) {
+//		this.x = x;
+//		this.y = y;
+//	}
+//	
+//	public Node(int x, int y, Node goal) {
+//		this.x = x;
+//		this.y = y;
+//		this.distance = Math.sqrt((this.getX()-goal.getX())+(this.getY()-goal.getY()));
+//	}
 	
 	public Node() {
 		
@@ -45,31 +46,44 @@ public class Node implements Comparable<Node>{
 		this.possibleNodes = possibleNodes;
 	}
 
-	public int getX() {
-		return x;
+	public NodeType getType() {
+		return type;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public void setType(NodeType type) {
+		this.type = type;
+	}
+	
+	public int compareTo(Node n) {
+		return getType().compareTo(n.getType());
 	}
 
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-	public double getDistance() {
-		//this.distance = Math.sqrt((this.getX()-goal.getX())+(this.getY()-goal.getY()));
-		return distance;
-	}
-	public void setDistance(Node goal) {
-		this.distance = Math.sqrt((this.getX()-goal.getX())+(this.getY()-goal.getY()));
-	}
-	public int compareTo(Node compareNode) {
-		int compareDistance = (int) compareNode.getDistance();
-		
-		return (int) this.getDistance() - compareDistance;
-	}
+//	public int getX() {
+//		return x;
+//	}
+//
+//	public void setX(int x) {
+//		this.x = x;
+//	}
+//
+//	public int getY() {
+//		return y;
+//	}
+//
+//	public void setY(int y) {
+//		this.y = y;
+//	}
+//	public double getDistance() {
+//		//this.distance = Math.sqrt((this.getX()-goal.getX())+(this.getY()-goal.getY()));
+//		return distance;
+//	}
+//	public void setDistance(Node goal) {
+//		this.distance = Math.sqrt((this.getX()-goal.getX())+(this.getY()-goal.getY()));
+//	}
+//	
+//	public int compareTo(Node compareNode) {
+//		int compareDistance = (int) compareNode.getDistance();
+//		
+//		return (int) this.getDistance() - compareDistance;
+//	}
 }
