@@ -1,3 +1,4 @@
+
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -42,7 +43,7 @@ public class AStar {
 		Node recent = new Node();
 		recent = last;
 		while (!recent.equals(start)) {
-			Edge anEdge = newEdge(recent, recent.getParent());
+			Edge anEdge = new Edge(recent, recent.getParent());
 			shortPath.add(anEdge);
 		}
 		return shortPath;
