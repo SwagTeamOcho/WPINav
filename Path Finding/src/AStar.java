@@ -17,6 +17,7 @@ public class AStar {
 			frontier.addAll(neighbors);
 			visited.add(current);
 			frontier = organize(goal, neighbors);
+			current = frontier.get(0);
 		}
 		
 		return path;
@@ -28,10 +29,23 @@ public class AStar {
 		return neighbors;
 	}
 	
+	//this is the heuristic done by AStar 
 	public LinkedList<Node> organize(Node goal, LinkedList<Node> currentSet) {
 		LinkedList<Node> frontiers = new LinkedList<Node>();
 		//need to organize list by shortest distance, currently pure heuristic
 		return frontiers;
+	}
+	
+	
+	public LinkedList<Edge> shortestPath (Node start, Node last, LinkedList<Node> path) {
+		LinkedList<Edge> shortPath = new LinkedList<Edge>();
+		Node recent = new Node();
+		recent = last;
+		while (!recent.equals(start)) {
+			Edge anEdge = newEdge(recent, recent.getParent());
+			shortPath.add(anEdge);
+		}
+		return shortPath;
 	}
 	
 }

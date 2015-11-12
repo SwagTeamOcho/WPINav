@@ -19,6 +19,10 @@ public class Node implements Comparable<Node>{
 		this.distance = Math.sqrt((this.getX()-goal.getX())+(this.getY()-goal.getY()));
 	}
 	
+	public Node() {
+		
+	}
+	
 	public Node getParent() {
 		return this.parent;
 	}
