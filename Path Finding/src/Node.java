@@ -7,6 +7,8 @@ public class Node implements Comparable<Node>{
 	private NodeType type;
 	private Node parent;
 	private LinkedList<Node> possibleNodes;
+	private String name;
+	private int number;
 //	private double distance;		//heuristic
 
 //	public Node(int x, int y) {
@@ -56,6 +58,26 @@ public class Node implements Comparable<Node>{
 	
 	public int compareTo(Node n) {
 		return getType().compareTo(n.getType());
+	}
+	
+	public boolean equals(Node n) {
+		return (this.getNumber() == n.getNumber()); 
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 //	public int getX() {
