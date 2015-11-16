@@ -43,7 +43,7 @@ public class AStar {
 		}
 		LinkedList<Edge> shortestPath = shortestPath(start, goal, path);
 		
-		return path;
+		return shortestPath;
 	}
 	
 	public LinkedList<Node> getNeighbors(Node current, LinkedList<Node> visited) {
