@@ -1,6 +1,7 @@
 
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.HashMap;
 
 public class AStar {
 	
@@ -9,16 +10,35 @@ public class AStar {
 		LinkedList<Node> frontier = new LinkedList<Node>();
 		LinkedList<Node> path = new LinkedList<Node>();
 		LinkedList<Node> visited = new LinkedList<Node>();
+		HashMap<Node, Node> cameFrom = new HashMap<Node, Node>();
+		cameFrom.put(start, null);
 		Node current = start;
-		while (!start.equals(goal)) {
+		System.out.println("hello");
+		while (!current.getName().equals(goal.getName())) {
 			//getNeighbors
+			System.out.println("hello1");
 			LinkedList<Node> neighbors = new LinkedList<Node>();
 			neighbors = getNeighbors(current, visited);
 			frontier.remove(current);
-			frontier.addAll(neighbors);
+			frontier.addAll(neighbors); 
 			visited.add(current);
+			System.out.println("hello2");
 			frontier = organize(goal, neighbors);
+			System.out.println("hello3");
+			System.out.println(neighbors.size());
+			for (int i = 0; i < neighbors.size(); i++){
+				System.out.println("i = " + i);
+				cameFrom.put(neighbors.get(i), current);
+				System.out.println("i = " + i);
+			}
 			current = frontier.get(0);
+		}
+		System.out.println("hello4");
+		current = goal;
+		path.add(current);
+		while (current.getName() != start.getName()){
+			current = cameFrom.get(current);
+			path.add(current);
 		}
 		
 		return path;
