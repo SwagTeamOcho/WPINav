@@ -65,6 +65,7 @@ public class AStar {
 		while (!recent.equals(start)) {
 			Edge anEdge = new Edge(recent, recent.getParent());
 			shortPath.add(anEdge);
+			recent = recent.getParent();
 		}
 		return shortPath;
 	}
