@@ -39,6 +39,7 @@ public class Node implements Comparable<Node>{
 		for(int i = 0; i < possibleNodes.size()-1; i++) {
 			if(!visited.contains(possibleNodes.get(i))) {
 				nodeList.add(possibleNodes.get(i));
+				possibleNodes.get(i).setParent(this);
 			}
 		}
 		return nodeList;
