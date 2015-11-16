@@ -36,10 +36,12 @@ public class AStar {
 		System.out.println("hello4");
 		current = goal;
 		path.add(current);
+		
 		while (current.getName() != start.getName()){
 			current = cameFrom.get(current);
 			path.add(current);
 		}
+		LinkedList<Edge> shortestPath = shortestPath(start, goal, path);
 		
 		return path;
 	}
