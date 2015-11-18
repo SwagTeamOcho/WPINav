@@ -86,7 +86,7 @@ public class DevGUI extends JPanel{
 
     //List of buildings to be shown to the user
     //private String[] buildings = {"Stratton Hall", "Project Centre", "Library", "Atwater Kent"}; 
-    private String[] buildings =  {"Stratton Hall Basement", "Stratton Hall Frst Floor", "Stratton Hall Second Floor"};
+    private String[] buildings =  {"Stratton Hall Basement", "Stratton Hall First Floor", "Stratton Hall Second Floor"};
     private String buildingSelectedSTART;   //track which building is selected to start in.
     private String buildingSelectedEND;     //track which building is selected to end in.
     //private Map selected;                 //track which map to display
@@ -101,6 +101,9 @@ public class DevGUI extends JPanel{
 
     //Variable to track which room list to display
     private String[] roomsSelected = {};
+    
+    private static String startBuilding;
+    private String endBuilding;
 
     protected enum BUILDINGS {
         /*STRATTONHALL, PROJECTCENTRE, LIBRARY, ATWATERKENT;
@@ -119,11 +122,14 @@ public class DevGUI extends JPanel{
     	STRATTONHALLBASE, STRATTONHALLFIRST, STRATTONHALLSECOND;
         public static BUILDINGS getEnum(String s){
             if(s.equals("Stratton Hall Basement")){
-                return STRATTONHALLBASE;
+                startBuilding = "Stratton Hall Basement";
+            	return STRATTONHALLBASE;
             }else if(s.equals("Stratton Hall First Floor")){
+            	startBuilding = "Stratton Hall First Floor";
                 return STRATTONHALLFIRST;
             }else if(s.equals("Stratton Hall Second Floor")){
-                return STRATTONHALLSECOND;
+            	startBuilding = "Stratton Hall Second Floor";
+            	return STRATTONHALLSECOND;
             }
             throw new IllegalArgumentException("No Enum specified for this string");
         }
@@ -392,10 +398,10 @@ public class DevGUI extends JPanel{
                     case STRATTONHALLBASE:
                         roomsSelected = roomsStratton;
                         break;
-                        case STRATTONHALLFIRST:
+                    case STRATTONHALLFIRST:
                         roomsSelected = roomsProjectCentre;
                         break;
-                        case STRATTONHALLSECOND:
+                    case STRATTONHALLSECOND:
                         roomsSelected = roomsLibrary;
                         break;
                         /*case ATWATERKENT:       //rest of floor cases
@@ -474,6 +480,8 @@ public class DevGUI extends JPanel{
                     public void mousePressed(MouseEvent evt) {
                         int x = evt.getX();
                         int y = evt.getY();
+                        int startingX = 0;
+                        int startingY = 0;
                         currentSquareIndex = getSquare(x, y);
                         if(createNodes)
                         {
@@ -528,8 +536,16 @@ public class DevGUI extends JPanel{
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            switch(BIULDINGS.getEnum())
-            ImageIcon mapIcon = new ImageIcon("StrattonHall-Basement.jpg");
+            ImageIcon mapIcon = new ImageIcon();
+            if(startBuilding.equals("Stratton Hall Basement")) {
+            	mapIcon = new ImageIcon("StrattonHall-Basement.jpg");
+            }
+            if(startBuilding.equals("Stratton Hall First Floor")) {
+            	mapIcon = new ImageIcon("StrattonHall_FirstFloor.jpg");
+            }
+            if(startBuilding.equals("Stratton Hall Second Floor")) {
+            	mapIcon = new ImageIcon("StrattonHall-2nd.jpg");
+            }
             ImageIcon pathIcon = new ImageIcon();
             mapImage = mapIcon.getImage();
             pathImage = pathIcon.getImage();
