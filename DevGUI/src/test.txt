@@ -1,0 +1,2 @@
+Node1x 100 Node1y 100 Node2x 200 Node2y 200 Weight 141
+Node3x 250 Node3y 250 Node4x 150 Node4y 150 Weight 141

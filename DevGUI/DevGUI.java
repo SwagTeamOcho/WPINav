@@ -23,9 +23,28 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.util.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.io.FileOutputStream;
+
+
 
 ///**
 //* Created by Lumbini on 11/7/2015.
+//* modified by Billy
 // * */
 //
 
@@ -33,6 +52,9 @@ import javax.swing.JPanel;
 
 
 public class DevGUI extends JPanel{
+    
+    String outputVar = "output.txt";
+    String inputVar = "output.txt";
 
     boolean createNodes = false;
     boolean createEdges = false;
@@ -95,6 +117,17 @@ public class DevGUI extends JPanel{
         }
     }
 
+    private Edge edge;
+    private Node node1;
+    private Node node2;
+    private LinkedList<Edge> edgeList = new LinkedList<Edge>();
+    private LinkedList<Node> nodeList = new LinkedList<Node>();
+    File file1;
+    Process process1;
+    File output;
+    Writer filewriter;
+    
+    
     /**
      * Create the application.
      */
@@ -104,6 +137,8 @@ public class DevGUI extends JPanel{
 
     //Launch the application. 
     public static void main(String[] args) {
+        
+        
         EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     try {
@@ -119,6 +154,7 @@ public class DevGUI extends JPanel{
     /**
      * Initialize the contents of the frame.
      */
+    
     private void initialize() {
 
         //Frame operations
@@ -258,10 +294,68 @@ public class DevGUI extends JPanel{
                     public void actionPerformed(ActionEvent e) 
                     {
                         System.out.println("Export Pushed");
-                        m1.produceNodes();
+                        //m1.produceNodes();
+                        //m1.produceEdges();
+                        
+                        try{
+                        output = new File(outputVar);
+                        output.createNewFile();
+                        
+                        filewriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputVar), "utf-8"));
+                        StringBuilder sb = new StringBuilder();
+                     
+                        
+                        
+                        for (int i = 0; i < edgeList.size(); i++){
+                            if (i > 0){
+                                sb.append("\n");
+                            }
+                            sb.append("Nodex ");
+                            sb.append(edgeList.get(i).getNode1().getX());
+                            sb.append(" Nodey ");
+                            sb.append(edgeList.get(i).getNode1().getY());
+                            sb.append(" Node2x ");
+                            sb.append(edgeList.get(i).getNode2().getX());
+                            sb.append(" Node2y ");
+                            sb.append(edgeList.get(i).getNode2().getY());
+                            sb.append(" Weight ");
+                            sb.append(edgeList.get(i).getWeight());
+                            
+                        }
+                        
+                        String everything = sb.toString();
+                        filewriter.write(everything);
+                        filewriter.close();
+                        }catch(IOException f){
+                            System.out.println(f);
+                        }
 
                     }
                 });
+           JButton btnImport = new JButton("Import");
+            btnImport.setBounds(762, 390, 132, 29);
+            uiPanel.add(btnImport);
+            btnImport.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) 
+                {
+                    System.out.println("Import Pushed");
+                    file1 = new File(inputVar);
+                    process1 = new Process(file1);
+                    nodeList.addAll(process1.getNodes());
+                    edgeList.addAll(process1.getEdges());
+                    repaint();
+                    
+                    int x;
+                    int y;
+                    for(int i = 0; i < nodeList.size(); i++){
+                        x = (nodeList.get(i).getX());
+                        y = (nodeList.get(i).getY());
+                    }
+
+                }
+            });     
+                
+            
 
 
         }     
@@ -337,13 +431,17 @@ public class DevGUI extends JPanel{
     
         private static final int SquareWidth = 5;
 
-        private static final int Max = 100;
+        private static final int Max = 1000;
 
-        private Rectangle[] squares = new Rectangle[Max];
+        public Rectangle[] squares = new Rectangle[Max];
+        
+        private Line2D[] lines = new Line2D[Max];
 
         private int squareCount = 0;
+        private int lineCount = 0;
 
         private int currentSquareIndex = -1;
+        private int currentLineIndex = -1;
 
         // private BufferedImage image;
 
@@ -369,19 +467,28 @@ public class DevGUI extends JPanel{
                         {
                             if (currentSquareIndex < 0) {// not inside a square
                                 add(x, y);
+                                nodeList.add(new Node(x, y));
+                                //evt.getComponent();
                             }
                         }
                         else if (createEdges)
                         {
+                            for (int i = 0; i < nodeList.size(); i++){
+                                add(nodeList.get(i).getX(), nodeList.get(i).getY());
+                            }
                             if(count == 0)
                             {
-                                startingX = x;
-                                startingY = y;
+                                startingX = (int) squares[currentSquareIndex].getX();
+                                startingY = (int) squares[currentSquareIndex].getY();
                                 count++;
                             }
-                            else
+                            else if (count == 1)
                             {
                                 createEdge(startingX, startingY, x, y);
+                                node1 = new Node(startingX, startingY);
+                                node2 = new Node(x, y);
+                                edge = new Edge(node1, node2, (int) calcDistance(startingX, startingY, x, y));
+                                edgeList.add(edge);
                                 System.out.println("Create Edge: " + startingX +" "+ startingY +"\t"+ x + " " + y +"\nDistance: "+ calcDistance(startingX, startingY, x, y));
                                 count = 0;
                             }
@@ -393,9 +500,10 @@ public class DevGUI extends JPanel{
                         int y = evt.getY();
 
                         System.out.println("\nX: " + x + "\t Y: " + y);
+                        repaint();
 
                         if (evt.getClickCount() >= 2) {
-                            remove(currentSquareIndex);
+                         //   remove(currentSquareIndex);
                         }
                     }
                 });
@@ -426,7 +534,7 @@ public class DevGUI extends JPanel{
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
             BasicStroke s = new BasicStroke(
-                    5.5f, 
+                    1.5f, 
                     BasicStroke.CAP_ROUND, 
                     BasicStroke.JOIN_ROUND);
             g2d.setStroke(s);
@@ -443,9 +551,13 @@ public class DevGUI extends JPanel{
 //             g2d.setColor(Color.RED);
 //             g2d.draw(path);
 
-            for (int i = 0; i < squareCount; i++){
-                ((Graphics2D)g).draw(squares[i]);
+            for (int i = 0; i < nodeList.size(); i++){
+                ((Graphics2D)g).draw(new Rectangle (nodeList.get(i).getX(), nodeList.get(i).getY(), SquareWidth, SquareWidth));
             }
+            
+            for (int i = 0; i < edgeList.size(); i++){
+                ((Graphics2D)g).draw(new Line2D.Double(edgeList.get(i).getNode1().getX(), edgeList.get(i).getNode1().getY(),edgeList.get(i).getNode2().getX(),edgeList.get(i).getNode2().getY() ));
+                }
         }
         
         public double calcDistance(int x1, int y1, int x2, int y2)
@@ -469,6 +581,17 @@ public class DevGUI extends JPanel{
                     return i;
             return -1;
         }
+        
+        
+        
+        
+        public int getLines(int x, int y) {
+            for (int i = 0; i < lineCount; i++)
+                if(lines[i].contains(x,y))
+                    return i;
+            return -1;
+        }
+        
 
         public void add(int x, int y) {
             if (squareCount < Max) {
@@ -483,7 +606,24 @@ public class DevGUI extends JPanel{
 
           public void createEdge(int x1, int y1, int x2, int y2)
            {
-              
+                
+                if (lineCount < Max) {
+                    lines[lineCount] = new Line2D.Double(squares[getSquare(x1, y1)].getX(),
+                                                         squares[getSquare(x1, y1)].getY(),
+                                                         squares[getSquare(x2, y2)].getX(),
+                                                         squares[getSquare(x2, y2)].getY());
+                                                    
+                                                    
+                                                    
+                                                    
+                    currentLineIndex = lineCount;
+                    lineCount++;
+                    repaint();
+                    }
+                
+                 ;
+            
+            
                
               // Graphics g = new Graphics();
                
@@ -509,15 +649,56 @@ public class DevGUI extends JPanel{
                
               // distance =  Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
            }
+        
+        
+        
+        
+        
+        
+        
+        
+        public void removeLinesAtSquare(int x, int y)
+        {
+            for (int i = 0; i < lineCount; i++)
+            {
+                int sqX1 = (int) lines[i].getX1();
+                int sqY1 = (int) lines[i].getY1();
+                int sqX2 = (int) lines[i].getX2();
+                int sqY2 = (int) lines[i].getY2();
+                int tolarance = 5;
+                
+            if(((x-tolarance <=  sqX1) && (sqX1 <= x+tolarance)) && ((y-tolarance <=  sqY1 ) && ( sqY1 <= y+tolarance)) 
+              || (((x-tolarance <=  sqX2) && (sqX2 <= x+tolarance)) && ((y-tolarance <=  sqY2) && (sqY2 <= y+tolarance))))
+            {
+                System.out.println("Remove line: " +i);
+                
+                if (i < 0 || i >= lineCount)
+                    return;
+                lineCount--;
+                lines[i] = lines[lineCount];
+                if (currentLineIndex == i)
+                    currentLineIndex = -1;
+                repaint();
+                }
+            }
+            
+        }
+        
+        
+        
 
         public void remove(int n) {
+            
             if (n < 0 || n >= squareCount)
                 return;
+            removeLinesAtSquare((int)squares[n].getX(), (int)squares[n].getY());
             squareCount--;
             squares[n] = squares[squareCount];
             if (currentSquareIndex == n)
                 currentSquareIndex = -1;
             repaint();
+            
+            
         }
 
         public void produceNodes(){
@@ -527,6 +708,19 @@ public class DevGUI extends JPanel{
             }
             System.out.print(nodes);
         }
+        
+        
+        public void produceEdges(){
+            nodes = "";
+            int lineArrSize = lines.length;
+            
+            for (int i = 0; i < lineArrSize; i++){
+                nodes = nodes +"\nX: " + squares[i].getX() + "  Y: " + squares[i].getY();
+            }
+            System.out.print(nodes);
+        }
+        
+        
 
         public void mouseMoved(MouseEvent evt) {
             int x = evt.getX();
@@ -536,25 +730,38 @@ public class DevGUI extends JPanel{
                 setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
             else
                 setCursor(Cursor.getDefaultCursor());
+            
+//            
+//            if (getLines(x, y) >= 0)
+//                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+//            else
+//                setCursor(Cursor.getDefaultCursor());    
+                
+                
         }
+//        public int getConnectedLineIndex(int x, int y)
+//        {
+//            return getLines();
+//        }
+//        
         
        
         
         
 
         public void mouseDragged(MouseEvent evt) {
-            int x = evt.getX();
-            int y = evt.getY();
-
-            if (currentSquareIndex >= 0) {
-                Graphics g = getGraphics();
-                g.setXORMode(getBackground());
-                ((Graphics2D)g).draw(squares[currentSquareIndex]);
-                squares[currentSquareIndex].x = x;
-                squares[currentSquareIndex].y = y;
-                ((Graphics2D)g).draw(squares[currentSquareIndex]);
-                g.dispose();
-            }
+//            int x = evt.getX();
+//            int y = evt.getY();
+//
+//            if (currentSquareIndex >= 0) {
+//                Graphics g = getGraphics();
+//                g.setXORMode(getBackground());
+//                ((Graphics2D)g).draw(squares[currentSquareIndex]);
+//                squares[currentSquareIndex].x = x;
+//                squares[currentSquareIndex].y = y;
+//                ((Graphics2D)g).draw(squares[currentSquareIndex]);
+//                g.dispose();
+//            }
         }
     }
 

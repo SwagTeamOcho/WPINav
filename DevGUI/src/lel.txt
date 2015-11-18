@@ -1,0 +1,6 @@
+Nodex 100 Nodey 100 Node2x 200 Node2y 200 Weight 141
+Nodex 250 Nodey 250 Node2x 150 Node2y 150 Weight 141
+Nodex 495 Nodey 174 Node2x 579 Node2y 253 Weight 115
+Nodex 561 Nodey 155 Node2x 447 Node2y 245 Weight 145
+Nodex 428 Nodey 204 Node2x 580 Node2y 254 Weight 160
+
