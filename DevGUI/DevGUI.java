@@ -92,9 +92,9 @@ public class DevGUI extends JPanel{
     //private Map selected;                 //track which map to display
 
     //List of rooms respective of the buildings
-    private String[] roomsStratton = {"101", "102A", "102B", "103", "104A", "104B", 
-            "104C", "105A", "105B", "105C", "105D", "106", 
-            "107", "107A", "108A", "109A", "109B", "110", "111-Bathroom(F)"};
+    //private String[] roomsStratton = {"101", "102A", "102B", "103", "104A", "104B", 
+      //      "104C", "105A", "105B", "105C", "105D", "106", 
+        //    "107", "107A", "108A", "109A", "109B", "110", "111-Bathroom(F)"};
     private String[] strattonBase = {"001","002","003","004","006","007","009","009A","009B","010","011",
 									"012","013","014"}
     private String[] strattonFirst ={"101", "102A", "102B", "103", "104A", "104B", 
