@@ -516,7 +516,7 @@ public class DevGUI extends JPanel{
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            ImageIcon mapIcon = new ImageIcon("StrattonHall_FirstFloor.jpg");
+            ImageIcon mapIcon = new ImageIcon("StrattonHall-Basement.jpg");
             ImageIcon pathIcon = new ImageIcon();
             mapImage = mapIcon.getImage();
             pathImage = pathIcon.getImage();
