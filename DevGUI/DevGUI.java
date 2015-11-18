@@ -85,7 +85,8 @@ public class DevGUI extends JPanel{
     private JButton searchButton;
 
     //List of buildings to be shown to the user
-    private String[] buildings = {"Stratton Hall", "Project Centre", "Library", "Atwater Kent"}; 
+    //private String[] buildings = {"Stratton Hall", "Project Centre", "Library", "Atwater Kent"}; 
+    private String[] buildings =  {"Stratton Hall Basement", "Stratton Hall Frst Floor", "Stratton Hall Second Floor"};
     private String buildingSelectedSTART;   //track which building is selected to start in.
     private String buildingSelectedEND;     //track which building is selected to end in.
     //private Map selected;                 //track which map to display
@@ -102,7 +103,7 @@ public class DevGUI extends JPanel{
     private String[] roomsSelected = {};
 
     protected enum BUILDINGS {
-        STRATTONHALL, PROJECTCENTRE, LIBRARY, ATWATERKENT;
+        /*STRATTONHALL, PROJECTCENTRE, LIBRARY, ATWATERKENT;
         public static BUILDINGS getEnum(String s){
             if(s.equals("Stratton Hall")){
                 return STRATTONHALL;
@@ -112,6 +113,17 @@ public class DevGUI extends JPanel{
                 return LIBRARY;
             }else if (s.equals("Atwater Kent")){
                 return ATWATERKENT;
+            }
+            throw new IllegalArgumentException("No Enum specified for this string");
+        }*/
+    	STRATTONHALLBASE, STRATTONHALLFIRST, STRATTONHALLSECOND;
+        public static BUILDINGS getEnum(String s){
+            if(s.equals("Stratton Hall Basement")){
+                return STRATTONHALLBASE;
+            }else if(s.equals("Stratton Hall First Floor")){
+                return STRATTONHALLFIRST;
+            }else if(s.equals("Stratton Hall Second Floor")){
+                return STRATTONHALLSECOND;
             }
             throw new IllegalArgumentException("No Enum specified for this string");
         }
@@ -377,18 +389,18 @@ public class DevGUI extends JPanel{
                 {
                     buildingSelectedSTART = (String) startBuildingSEL.getSelectedItem();
                     switch(BUILDINGS.getEnum(buildingSelectedSTART)){
-                        case STRATTONHALL:
+                    case STRATTONHALLBASE:
                         roomsSelected = roomsStratton;
                         break;
-                        case PROJECTCENTRE:
+                        case STRATTONHALLFIRST:
                         roomsSelected = roomsProjectCentre;
                         break;
-                        case LIBRARY:
+                        case STRATTONHALLSECOND:
                         roomsSelected = roomsLibrary;
                         break;
-                        case ATWATERKENT:
+                        /*case ATWATERKENT:       //rest of floor cases
                         roomsSelected = roomsAtwaterKent;
-                        break;
+                        break;*/
                     } 
                 }
             });
@@ -403,19 +415,19 @@ public class DevGUI extends JPanel{
                 public void actionPerformed(ActionEvent e) 
                 {
                     buildingSelectedEND = (String) endBuildingSEL.getSelectedItem();
-                    switch(BUILDINGS.getEnum(buildingSelectedEND)){
-                        case STRATTONHALL:
+                    switch(BUILDINGS.getEnum(buildingSelectedSTART)){
+                        case STRATTONHALLBASE:
                         roomsSelected = roomsStratton;
                         break;
-                        case PROJECTCENTRE:
+                        case STRATTONHALLFIRST:
                         roomsSelected = roomsProjectCentre;
                         break;
-                        case LIBRARY:
+                        case STRATTONHALLSECOND:
                         roomsSelected = roomsLibrary;
                         break;
-                        case ATWATERKENT:
+                        /*case ATWATERKENT:       //rest of floor cases
                         roomsSelected = roomsAtwaterKent;
-                        break;
+                        break;*/
                     } 
                 }
             });
@@ -516,6 +528,7 @@ public class DevGUI extends JPanel{
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+            switch(BIULDINGS.getEnum())
             ImageIcon mapIcon = new ImageIcon("StrattonHall-Basement.jpg");
             ImageIcon pathIcon = new ImageIcon();
             mapImage = mapIcon.getImage();
